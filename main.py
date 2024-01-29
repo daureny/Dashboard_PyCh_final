@@ -3,9 +3,9 @@ import pandas as pd
 import plotly.graph_objs as go
 import dash_bootstrap_components as dbc
 
-
+git_path = 'https://github.com/daureny/Dashboard_PyCh_final/tree/master/Data'
 # importing FI (financial indicator sheet) - ALL sheets and adding column Дата according to sheet name in xls file
-workbook = pd.ExcelFile('C:/Users/User/PycharmProjects/Dashboard_final/Data/FI2.xlsx')
+workbook = pd.ExcelFile(f'{git_path}/FI2.xlsx')
 sheets = workbook.sheet_names
 df_FI = pd.concat([pd.read_excel(workbook, sheet_name=s)
                   .assign(Дата=s) for s in sheets])
@@ -17,7 +17,7 @@ df_FI = df_FI.drop(columns='№')
 df_FI = df_FI.fillna(0)
 
 # importing and transposing loan portfolio sheet
-df_LP_raw = pd.read_excel(io='C:/Users/User/PycharmProjects/Dashboard_final/Data/LP.xlsx', engine='openpyxl')
+df_LP_raw = pd.read_excel(io=f'{git_path}/LP.xlsx', engine='openpyxl')
 df_LP = df_LP_raw.transpose()
 
 df_LP.columns = df_LP.iloc[0]
@@ -29,7 +29,7 @@ df_LP.index = pd.to_datetime(df_LP.index, format='%Y-%m-%d', errors='coerce')
 df_LP = df_LP.sort_index(ascending=True)
 
 # importing and transposing interest margin sheet - df_IM
-workbook = pd.ExcelFile('C:/Users/User/PycharmProjects/Dashboard_final/Data/IM.xlsx')
+workbook = pd.ExcelFile(f'{git_path}/IM.xlsx')
 sheets = workbook.sheet_names
 df_IM = pd.concat([pd.read_excel(workbook, sheet_name=s)
                   .assign(Дата=s) for s in sheets])
@@ -49,7 +49,7 @@ df_IM = df_IM.rename(columns={"Активы, приносящие доход (н
                               'Расходы, связанные с выплатой вознаграждения2': 'Расходы, связанные с выплатой вознаграждения'})
 
 # importing and transposing interest margin sheet - df_PN - пруденциальные коэф-ты
-workbook = pd.ExcelFile('C:/Users/User/PycharmProjects/Dashboard_final/Data/PN.xlsx')
+workbook = pd.ExcelFile(f'{git_path}/PN.xlsx')
 sheets = workbook.sheet_names
 
 # create a column and assign it sheet names
@@ -62,7 +62,7 @@ df_PN = df_PN.drop(columns='Собственный капитал ')
 df_PN = df_PN.set_index('Наименование банков второго уровня')
 
 # thresholds for ratios are in this dataframe
-df_PNT = pd.read_excel(io='C:/Users/User/PycharmProjects/Dashboard_final/Data/PN_threshold.xlsx',
+df_PNT = pd.read_excel(io=f'{git_path}/PN_threshold.xlsx',
                            engine='openpyxl')
 df_PNT = df_PNT.set_index(df_PNT[0])
 df_PNT.drop(df_PNT.columns[[0, 2, 3]], axis=1, inplace=True)
