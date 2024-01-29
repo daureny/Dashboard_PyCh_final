@@ -3,5 +3,5 @@ plotly~=5.18.0
 dash~=2.14.2
 dash-bootstrap-components~=1.5.0
 openpyxl~=3.2.0b1
-gunicorn
-psycopg2-binary
+gunicorn>=21.2.0
+psycopg2-binary>=2.9.6
