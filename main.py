@@ -2,8 +2,10 @@ from dash import Dash, dcc, html, Input, Output
 import pandas as pd
 import plotly.graph_objs as go
 import dash_bootstrap_components as dbc
+import gunicorn
 
 git_path = 'https://github.com/daureny/Dashboard_PyCh_final/tree/master/Data'
+
 # importing FI (financial indicator sheet) - ALL sheets and adding column Дата according to sheet name in xls file
 workbook = pd.ExcelFile(f'{git_path}/FI2.xlsx')
 sheets = workbook.sheet_names
@@ -85,6 +87,7 @@ app = Dash(__name__, external_stylesheets=[dbc.themes.YETI],
            meta_tags=[{'name': 'viewport',
                        'content': 'width=device-width, initial-scale=1.0'}]
            )
+server = app.server
 
 app.layout = dbc.Container([
 
