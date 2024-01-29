@@ -4,7 +4,9 @@ import plotly.graph_objs as go
 import dash_bootstrap_components as dbc
 import gunicorn
 
-git_path = 'https://github.com/daureny/Dashboard_PyCh_final/tree/master/Data'
+git_path = 'https://github.com/daureny/Dashboard_PyCh_final/raw/master/Data'
+
+
 
 # importing FI (financial indicator sheet) - ALL sheets and adding column Дата according to sheet name in xls file
 workbook = pd.ExcelFile(f'{git_path}/FI2.xlsx')
