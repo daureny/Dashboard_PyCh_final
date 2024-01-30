@@ -89,13 +89,6 @@ df_floor_threshold = pd.concat([
 options = [name for name in df_PN.columns]
 coefs = options[:-1]
 
-###### TEST
-# print(df_PNT.loc[selected_item, 'T'])
-# print(coefs)
-#
-# print(df_floor_threshold.index)
-
-
 
 # creating Dashboard
 
