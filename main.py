@@ -4,9 +4,9 @@ import plotly.graph_objs as go
 import dash_bootstrap_components as dbc
 import gunicorn
 
+
+# Path to data in excel files
 git_path = 'https://github.com/daureny/Dashboard_PyCh_final/raw/master/Data'
-
-
 
 # importing FI (financial indicator sheet) - ALL sheets and adding column Дата according to sheet name in xls file
 workbook = pd.ExcelFile(f'{git_path}/FI2.xlsx')
@@ -67,10 +67,17 @@ df_PN = df_PN.set_index('Наименование банков второго у
 
 # thresholds for ratios are in this dataframe
 df_PNT = pd.read_excel(io=f'{git_path}/PN_threshold.xlsx',
-                           engine='openpyxl')
-df_PNT = df_PNT.set_index(df_PNT[0])
+                            engine='openpyxl')
+# print(df_PNT)
+
+df_PNT = df_PNT.set_index(df_PNT['Unnamed: 0'])
+# print(df_PNT)
+
 df_PNT.drop(df_PNT.columns[[0, 2, 3]], axis=1, inplace=True)
+# print(df_PNT)
+
 df_PNT = df_PNT.rename(columns={'Unnamed: 1': 'T'})
+# print(df_PNT)
 
 # Now selecting coefs with floor threshold (the selected ratio will not be less than the floor)
 df_floor_threshold = pd.concat([
@@ -81,6 +88,13 @@ df_floor_threshold = pd.concat([
 
 options = [name for name in df_PN.columns]
 coefs = options[:-1]
+
+###### TEST
+# print(df_PNT.loc[selected_item, 'T'])
+# print(coefs)
+#
+# print(df_floor_threshold.index)
+
 
 
 # creating Dashboard
@@ -220,8 +234,6 @@ dbc.Row(
     dbc.Row(html.P('ТОО "Стандарт бизнес консалтинг", 2023. Все права защищены.')),
     dbc.Row(html.Br())
 ])
-
-print(df_LP.index.unique())
 
 # call back to graph-1
 @app.callback(
@@ -456,7 +468,6 @@ def generate_chart(selected_item):
             'yanchor': 'top',
             'font': {'size': 18, 'color': 'black', 'family': "Arial Black, sans-serif"}  # Example of a bolder font
         },
-
         )
 
     fig = go.Figure(data=data, layout=layout)
@@ -501,8 +512,11 @@ def generate_chart(selected_item):
 
     fig = go.Figure(data=data, layout=layout)
 
+
     try:
+
         threshold_value = df_PNT.loc[selected_item, 'T']  # Adjust based on actual DataFrame structure
+
         if selected_item in df_floor_threshold.index:
             fig.add_hrect(y0=0, y1=threshold_value, line_width=0, fillcolor="red", opacity=0.3)
         else:
